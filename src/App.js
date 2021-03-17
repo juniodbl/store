@@ -5,8 +5,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
-  useParams
+  Link
 } from "react-router-dom";
 
 import { Api } from './Api';
@@ -31,18 +30,17 @@ function App() {
           <Route path="/">
             <Row>
               {Api.getItens().map(item => (
-                <Col>
+                <Col key={item.id}>
                   <Card style={{ width: '18rem', marginBottom: '1em' }}>
                     <Link to={"/product/" + item.id}>
-                      <Card.Img variant="top" src={item.image} />
+                      <Card.Img variant="top" src={item.images[0]} />
                     </Link>
                     <Card.Body>
-                      <Card.Title>{item.title}</Card.Title>
+                      <Card.Title>{item.name}</Card.Title>
                       <Card.Text>
-                        From: {item.fromValue}<br />
-                        To: {item.toValue}
+                        Price: {item.price}
                       </Card.Text>
-                      <Button variant="primary">Add To Cart</Button>
+                      <Button variant="primary">Buy</Button>
                     </Card.Body>
                   </Card>
                 </Col>
@@ -56,23 +54,17 @@ function App() {
 }
 
 function Product() {
-  let { id } = useParams();
   const item = Api.getItens()[0];
 
   return (
     <>
-      <Link to="/">{id} Back</Link><br />
-
       <Row>
-        <Col xs={4}><img src={item.image} alt="product" /></Col>
+        <Col xs={4}><img src={item.images[0]} alt="product" /></Col>
         <Col xs={8}>
-          {item.title}<br />
-
-          From: {item.fromValue}<br />
-          To: {item.toValue}
+          {item.name}<br />
+          Price: {item.price}
         </Col>
       </Row>
-
     </>
   );
 }
